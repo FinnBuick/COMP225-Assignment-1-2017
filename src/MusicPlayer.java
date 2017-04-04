@@ -86,7 +86,61 @@ public class MusicPlayer {
     
     void sortTrack() { // TODO
     	// Sorts (ascending) the list according to the name of the track
+    	MusicPlayer a = null, b = null;
+    	musicNode tmp = null;
+    	
+    	
+    	if(head == null || head.next == null)// Checks if the list is empty or if we have reached the end of the list
+    		return;
+    	
+    	partition(head, a.head, b.head); // split list in half
+    	
+    	a.sortTrack(); //recurse first half
+    	b.sortTrack(); //recurse second half
+    	
+    	tmp = mergeLists(a.head,b.head); 
+    	
+    	head = tmp;
+    	
     	}
+    
+
+	void partition(musicNode head, musicNode front, musicNode back){
+    	// Splits the given list in half 
+    	musicNode slow;
+    	musicNode fast;
+    	
+    	if(head == null || head.next == null){// Checks if the list is empty or if we have reached the end of the list
+    		front = head;
+    		back = null;
+    	} else {
+    		slow = head;
+    		fast = head.next;
+    		
+    		while(fast != null){
+    			
+    			fast = fast.next;
+    			
+    			if(fast != null){
+    				slow = slow.next;
+    				fast = fast.next;
+    			}
+    	
+    		}
+    		front = head;
+    		back = slow.next;
+    		slow.next = null;
+    	}
+    }
+	
+    musicNode mergeLists(musicNode l1, musicNode l2) {
+    	musicNode mergedList = null;
+    	while(l1.next != null && l2.next != null){
+    		
+    			
+    	}
+		return l1;
+	}
     
     void sortPlayed() {  // This is optional but might be useful for shuffling.
     	// Sorts (ascending) the list according to the number of times played
