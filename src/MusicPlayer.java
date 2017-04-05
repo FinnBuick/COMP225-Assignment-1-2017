@@ -46,6 +46,11 @@ public class MusicPlayer {
     public void setToNull() {
         head = null;
     }
+    
+    public void setHead(musicNode el){ //setter
+    	head = el;
+    }
+    
     public boolean isEmpty() {
         return head == null;
     }
@@ -86,64 +91,38 @@ public class MusicPlayer {
     
     void sortTrack() { // TODO
     	// Sorts (ascending) the list according to the name of the track
-    	MusicPlayer a = null, b = null;
-    	musicNode tmp = null;
-    	
+    	MusicPlayer a = new MusicPlayer();
+    	MusicPlayer b = new MusicPlayer();
+
     	
     	if(head == null || head.next == null)// Checks if the list is empty or if we have reached the end of the list
     		return;
     	
-    	partition(head, a.head, b.head); // split list in half
+    	partition(head, a, b); // split list in half (JAVA OBJECTS ARE NOT PASS BY REFERENCE?)
     	
     	a.sortTrack(); //recurse first half
     	b.sortTrack(); //recurse second half
     	
-    	tmp = mergeLists(a.head,b.head); 
-    	
-    	head = tmp;
+    	head = mergeListsByTrack(a.head,b.head); 
     	
     	}
     
-
-	void partition(musicNode head, musicNode front, musicNode back){
-    	// Splits the given list in half 
-    	musicNode slow;
-    	musicNode fast;
-    	
-    	if(head == null || head.next == null){// Checks if the list is empty or if we have reached the end of the list
-    		front = head;
-    		back = null;
-    	} else {
-    		slow = head;
-    		fast = head.next;
-    		
-    		while(fast != null){
-    			
-    			fast = fast.next;
-    			
-    			if(fast != null){
-    				slow = slow.next;
-    				fast = fast.next;
-    			}
-    	
-    		}
-    		front = head;
-    		back = slow.next;
-    		slow.next = null;
-    	}
-    }
-	
-    musicNode mergeLists(musicNode l1, musicNode l2) {
-    	musicNode mergedList = null;
-    	while(l1.next != null && l2.next != null){
-    		
-    			
-    	}
-		return l1;
-	}
     
     void sortPlayed() {  // This is optional but might be useful for shuffling.
     	// Sorts (ascending) the list according to the number of times played
+    	MusicPlayer a = new MusicPlayer();
+    	MusicPlayer b = new MusicPlayer();
+
+    	
+    	if(head == null || head.next == null)// Checks if the list is empty or if we have reached the end of the list
+    		return;
+    	
+    	partition(head, a, b); // split list in half (JAVA OBJECTS ARE NOT PASS BY REFERENCE?)
+    	
+    	a.sortTrack(); //recurse first half
+    	b.sortTrack(); //recurse second half
+    	
+    	head = mergeListsByPlayed(a.head,b.head); 
     	}
        
     int countItem(String item) {  // TODO
@@ -173,6 +152,72 @@ public class MusicPlayer {
     	// Removes the top node of fromList and puts it onto (the top of) toList.
     	// If fromList is empty, it does nothing.
     }
+    
+	void partition(musicNode head, MusicPlayer front, MusicPlayer back){ // front and back be null
+    	// Splits the given list in half 
+    	musicNode slow;
+    	musicNode fast;
+    	
+    	if(head == null || head.next == null){// Checks if the list is empty or if we have reached the end of the list
+    		front.setHead(head);
+    		back.setToNull();
+    	} else {
+    		slow = head;
+    		fast = head.next;
+    		
+    		while(fast != null){
+    			
+    			fast = fast.next;
+    			
+    			if(fast != null){
+    				slow = slow.next;
+    				fast = fast.next;
+    			}
+    	
+    		}
+    		front.setHead(head);
+    		back.setHead(slow.next);
+    		slow.next = null;
+    	}
+    }
+	
+    musicNode mergeListsByTrack(musicNode l1, musicNode l2) {
+    	musicNode mergedList = null;
+    	
+    	if(l1 == null)
+    		return l2;
+    	else if(l2 == null)
+    		return l1;
+    	
+    	if(l1.LTTrack(l2)){
+    		mergedList = l1;
+    		mergedList.next = mergeListsByTrack(l1.next, l2);
+    	}else{
+    		mergedList = l2;
+    		mergedList.next = mergeListsByTrack(l1, l2.next);
+    	}
+    	
+		return mergedList;
+	}
+    
+    musicNode mergeListsByPlayed(musicNode l1, musicNode l2) {
+    	musicNode mergedList = null;
+    	
+    	if(l1 == null)
+    		return l2;
+    	else if(l2 == null)
+    		return l1;
+    	
+    	if(l1.LTPlayed(l2)){
+    		mergedList = l1;
+    		mergedList.next = mergeListsByPlayed(l1.next, l2);
+    	}else{
+    		mergedList = l2;
+    		mergedList.next = mergeListsByPlayed(l1, l2.next);
+    	}
+    	
+		return mergedList;
+	}
 }
 
 
