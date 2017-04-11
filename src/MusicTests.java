@@ -22,6 +22,7 @@ public class MusicTests {
 
 		 trackListOne.moveFirstNode(trackListOne, trackListTwo);
 		 assertTrue(trackListTwo.firstTrack().equals("c"));
+
 	}
 	
 	@Test

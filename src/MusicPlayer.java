@@ -151,6 +151,15 @@ public class MusicPlayer {
     void moveFirstNode(MusicPlayer fromList, MusicPlayer toList) { // TODO  
     	// Removes the top node of fromList and puts it onto (the top of) toList.
     	// If fromList is empty, it does nothing.
+    	if(fromList.isEmpty())
+    		return;
+    	else{
+    		musicNode tmp = fromList.head; // Save top of fromList
+    		fromList.head = fromList.head.next; // increment head
+    		tmp.next = toList.head;
+    		toList.head = tmp;
+    	}
+    	
     }
     
 	void partition(musicNode head, MusicPlayer front, MusicPlayer back){ // front and back be null
