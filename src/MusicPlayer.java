@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 class musicNode {
@@ -94,12 +93,10 @@ public class MusicPlayer {
     	MusicPlayer a = new MusicPlayer();
     	MusicPlayer b = new MusicPlayer();
 
-    	
     	if(head == null || head.next == null)// Checks if the list is empty or if we have reached the end of the list
     		return;
     	
-    	partition(head, a, b); // split list in half (JAVA OBJECTS ARE NOT PASS BY REFERENCE?)
-    	
+    	partition(head, a, b); // split list in half 
     	a.sortTrack(); //recurse first half
     	b.sortTrack(); //recurse second half
     	
@@ -113,12 +110,10 @@ public class MusicPlayer {
     	MusicPlayer a = new MusicPlayer();
     	MusicPlayer b = new MusicPlayer();
 
-    	
     	if(head == null || head.next == null)// Checks if the list is empty or if we have reached the end of the list
     		return;
     	
-    	partition(head, a, b); // split list in half (JAVA OBJECTS ARE NOT PASS BY REFERENCE?)
-    	
+    	partition(head, a, b); // split list in half 
     	a.sortTrack(); //recurse first half
     	b.sortTrack(); //recurse second half
     	
@@ -127,13 +122,29 @@ public class MusicPlayer {
        
     int countItem(String item) {  // TODO
     	// Returns the number of times that item occurs in the current list
-    	return 0;
+    	if(item.isEmpty() || item == null)
+    		return 0;
+    	
+    	int count = 0;
+    	musicNode tmp = head;
+    	for(;tmp != null; tmp = tmp.next)// loop through list
+    		if(tmp.track.compareTo(item) == 0) // check if current track is equal to target
+				count++;
+    	return count;
     }
      
     musicNode checkMembership(String _track) { // TODO
     	// If the given _track is present in the current list (i.e. the node whose "track" field
     	// is equal to _track), returns the address of that node;
     	// otherwise returns null. 
+    	if(_track.isEmpty() || _track == null)
+    		return null;
+    	
+    	musicNode tmp = head;
+    	for(;tmp != null; tmp = tmp.next)// loop through list
+    		if(tmp.track.compareTo(_track) == 0) // check if current track is equal to target
+				return tmp;
+    	
     	return null;
     }
     
@@ -156,8 +167,8 @@ public class MusicPlayer {
     	else{
     		musicNode tmp = fromList.head; // Save top of fromList
     		fromList.head = fromList.head.next; // increment head
-    		tmp.next = toList.head;
-    		toList.head = tmp;
+    		tmp.next = toList.head; // point the moved node to the head of the new list
+    		toList.head = tmp; // reassign the new head
     	}
     	
     }
@@ -170,15 +181,15 @@ public class MusicPlayer {
     	if(head == null || head.next == null){// Checks if the list is empty or if we have reached the end of the list
     		front.setHead(head);
     		back.setToNull();
-    	} else {
-    		slow = head;
-    		fast = head.next;
+    	} else { // Finds the midpoint of the list using the "runner" technique
+    		slow = head; 
+    		fast = head.next; // Fast moves twice each loop where as slow only moves once per loop
     		
     		while(fast != null){
     			
     			fast = fast.next;
     			
-    			if(fast != null){
+    			if(fast != null){ //  if fast has reached the end of the list then slow must be at the midpoint
     				slow = slow.next;
     				fast = fast.next;
     			}
